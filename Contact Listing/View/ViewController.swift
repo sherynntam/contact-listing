@@ -27,6 +27,14 @@ class ViewController: UIViewController {
         initRefreshControl()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
+        viewModel.initFetch()
+    }
+    
     private func initViewModel() {
         viewModel = ContactViewModel()
 
@@ -63,7 +71,21 @@ class ViewController: UIViewController {
     }
     
     @objc func addButtonTapped(sender: UIBarButtonItem) {
-        
+        self.performSegue(withIdentifier: "showDetails", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetails" ,
+            let nextScene = segue.destination as? ContactDetailsTableViewController {
+            
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                let selectedContact = viewModel.contacts[indexPath.row]
+                nextScene.viewModel = ContactDetailsViewModel(contact: selectedContact, index: indexPath.row)
+            }
+            else {
+                nextScene.viewModel = ContactDetailsViewModel(contact: nil, index: -1)
+            }
+        }
     }
 }
 
@@ -79,7 +101,7 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ContactTableViewCell
         let contact = viewModel.contacts[indexPath.row]
         
-        cell.nameLabel.text = contact.firstName
+        cell.nameLabel.text = "\(contact.firstName) \(contact.lastName)"
         
         return cell
     }
@@ -92,7 +114,7 @@ extension ViewController: UITableViewDelegate {
         return 80
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
+        self.performSegue(withIdentifier: "showDetails", sender: self)
     }
 }

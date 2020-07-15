@@ -9,7 +9,6 @@
 import Foundation
 
 class ContactViewModel {
-    let apiService: APIServiceProtocol
     
     var contacts: [Contact] = [] {
         didSet {
@@ -26,13 +25,12 @@ class ContactViewModel {
     var reloadTableView: (()->())?
     var showAlertClosure: (()->())?
     
-    init(apiService: APIServiceProtocol = APIService()) {
-        self.apiService = apiService
+    init() {
         initFetch()
     }
     
     func initFetch() {
-        apiService.fetchAllContacts { [weak self] (success, contacts, error) in
+        APIService.shared.fetchAllContacts { [weak self] (success, contacts, error) in
             if let error = error {
                 self?.alertMessage = error.rawValue
             } else {

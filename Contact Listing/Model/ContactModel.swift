@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct Contact: Decodable {
+struct Contact: Encodable, Decodable {
 
     let id: String
-    let firstName: String
-    let lastName: String
-    let email: String?
-    let phone: String?
+    var firstName: String
+    var lastName: String
+    var email: String?
+    var phone: String?
 
     init(id: String, firstName: String, lastName: String, email: String? = nil, phone:String? = nil) {
         self.id = id
