@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ContactsViewController.swift
 //  Contact Listing
 //
 //  Created by Sherynn Tam on 13/07/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ContactsViewController: UIViewController {
 
     var viewModel: ContactViewModel!
     var refreshControl = UIRefreshControl()
@@ -90,7 +90,7 @@ class ViewController: UIViewController {
 }
 
 // MARK: - UITableView Data Source
-extension ViewController: UITableViewDataSource {
+extension ContactsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.contacts.count
@@ -108,7 +108,7 @@ extension ViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableView Delegate
-extension ViewController: UITableViewDelegate {
+extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
